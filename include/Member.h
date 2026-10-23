@@ -20,6 +20,7 @@ public:
     const std::string &getEmail() const;
     double getLateFees() const;
     void addLateFee(double fee);
+    bool operator==(const Member &other) const;
 };
 
 #endif

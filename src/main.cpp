@@ -40,25 +40,25 @@ int main()
         {
         case 1:
         {
-            unsigned id{};
-            std::string title{};
-            std::string author{};
-            unsigned short publish_year{};
-            std::string ISBN{};
-            std::cout << "Enter book id: ";
-            std::cin >> id;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Enter book title: ";
-            std::getline(std::cin, title);
-            std::cout << "Enter book author: ";
-            std::getline(std::cin, author);
-            std::cout << "Enter publish year: ";
-            std::cin >> publish_year;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Enter ISBN: ";
-            std::getline(std::cin, ISBN);
             try
             {
+                unsigned id{};
+                std::string title{};
+                std::string author{};
+                unsigned short publish_year{};
+                std::string ISBN{};
+                std::cout << "Enter book id: ";
+                std::cin >> id;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Enter book title: ";
+                std::getline(std::cin, title);
+                std::cout << "Enter book author: ";
+                std::getline(std::cin, author);
+                std::cout << "Enter publish year: ";
+                std::cin >> publish_year;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Enter ISBN: ";
+                std::getline(std::cin, ISBN);
                 library.addBook(Book(id, title, author, publish_year, ISBN));
             }
             catch (const std::runtime_error &e)
@@ -69,12 +69,12 @@ int main()
         }
         case 2:
         {
-            unsigned id{};
-            std::cout << "Enter book id: ";
-            std::cin >> id;
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             try
             {
+                unsigned id{};
+                std::cout << "Enter book id: ";
+                std::cin >> id;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 library.removeBook(id);
             }
             catch (const std::runtime_error &e)
@@ -116,15 +116,64 @@ int main()
             {
                 std::cout << e.what() << std::endl;
             }
+            break;
         }
         case 5:
         {
+            try
+            {
+                unsigned id{};
+                std::string name{};
+                std::string surname{};
+                std::string email{};
+                std::cout << "Enter member id: ";
+                std::cin >> id;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Enter member name: ";
+                std::getline(std::cin, name);
+                std::cout << "Enter member surname: ";
+                std::getline(std::cin, surname);
+                std::cout << "Enter member email: ";
+                std::getline(std::cin, email);
+                library.addMember(Member(id, name, surname, email));
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 6:
         {
+            try
+            {
+                unsigned id{};
+                std::cout << "Enter member id: ";
+                std::cin >> id;
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                library.removeMember(id);
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 7:
         {
+            try
+            {
+                const std::vector<Member> all_members = library.getAllMembers();
+                for (const Member &member : all_members)
+                {
+                    std::cout << member.getId() << ": " << member.getName() << " " << member.getSurname() << ", " << member.getEmail() << ", Late Fee: " << member.getLateFees() << std::endl;
+                }
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 8:
         {

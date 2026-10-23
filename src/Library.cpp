@@ -13,7 +13,7 @@ void Library::addBook(Book book)
     else
     {
         auto it = std::find(books.begin(), books.end(), book);
-        if (it != books.end())
+        if (it == books.end())
             books.push_back(book);
         else
         {
@@ -64,4 +64,51 @@ std::vector<Book> Library::searchBooks(const std::string &title_author_isbn) con
         return matching_books;
     }
     throw std::runtime_error("No books found that match given criteria");
+}
+
+void Library::addMember(Member member)
+{
+    if (members.size() == 0)
+    {
+        members.push_back(member);
+    }
+    else
+    {
+        auto it = std::find(members.begin(), members.end(), member);
+        if (it == members.end())
+        {
+            members.push_back(member);
+        }
+        else
+        {
+            throw std::runtime_error("Member already exists");
+        }
+    }
+}
+
+void Library::removeMember(unsigned id)
+{
+    if (members.size() == 0)
+    {
+        throw std::runtime_error("Member list empty");
+    }
+    auto it = std::find_if(members.begin(), members.end(), [id](const Member &member)
+                           { return member.getId() == id; });
+    if (it != members.end())
+    {
+        members.erase(it);
+    }
+    else
+    {
+        throw std::runtime_error("No such member exists");
+    }
+}
+
+const std::vector<Member> &Library::getAllMembers() const
+{
+    if (members.size() == 0)
+    {
+        throw std::runtime_error("Member list empty");
+    }
+    return members;
 }

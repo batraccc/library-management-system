@@ -17,6 +17,9 @@ public:
     void removeBook(unsigned id);
     std::vector<Book> searchBooks(const std::string &title_author_isbn) const;
     const std::vector<Book> &getAllBooks() const;
+    void addMember(Member member);
+    void removeMember(unsigned id);
+    const std::vector<Member> &getAllMembers() const;
 };
 
 #endif

@@ -40,3 +40,8 @@ void Member::addLateFee(double fee)
         throw std::runtime_error("Invalid fee");
     }
 }
+
+bool Member::operator==(const Member &other) const
+{
+    return this->name == other.name && this->surname == other.surname && this->email == other.email;
+}
