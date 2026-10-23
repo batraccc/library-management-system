@@ -3,6 +3,7 @@
 
 #include "Book.h"
 #include "Member.h"
+#include "BorrowRecord.h"
 #include <vector>
 
 class Library
@@ -10,6 +11,7 @@ class Library
 private:
     std::vector<Book> books{};
     std::vector<Member> members{};
+    std::vector<BorrowRecord> borrow_records{};
 
 public:
     Library();
@@ -20,6 +22,10 @@ public:
     void addMember(Member member);
     void removeMember(unsigned id);
     const std::vector<Member> &getAllMembers() const;
+    void borrowBook(unsigned book_id, unsigned member_id);
+    void returnBook(unsigned book_id, unsigned member_id);
+    std::vector<Book> getMemberBorrowedBooks(unsigned member_id) const;
+    const std::vector<BorrowRecord> &getBorrowingHistory() const;
 };
 
 #endif

@@ -112,3 +112,101 @@ const std::vector<Member> &Library::getAllMembers() const
     }
     return members;
 }
+
+void Library::borrowBook(unsigned book_id, unsigned member_id)
+{
+    auto book_it = std::find_if(books.begin(), books.end(), [book_id](const Book &book)
+                                { return book.getId() == book_id; });
+    auto member_it = std::find_if(members.begin(), members.end(), [member_id](const Member &member)
+                                  { return member.getId() == member_id; });
+    auto borrow_book_it = std::find_if(borrow_records.begin(), borrow_records.end(), [book_id](const BorrowRecord &borrow)
+                                       { return borrow.getBookId() == book_id; });
+    if (book_it == books.end())
+    {
+        throw std::runtime_error("Book doesn't exist");
+    }
+    else if (member_it == members.end())
+    {
+        throw std::runtime_error("Member doesn't exist");
+    }
+    else if (borrow_book_it != borrow_records.end())
+    {
+        throw std::runtime_error("Book already borrowed");
+    }
+    else
+    {
+        BorrowRecord record(book_id, member_id, Date());
+        borrow_records.push_back(record);
+    }
+}
+
+void Library::returnBook(unsigned book_id, unsigned member_id)
+{
+    auto book_it = std::find_if(books.begin(), books.end(), [book_id](const Book &book)
+                                { return book.getId() == book_id; });
+    auto member_it = std::find_if(members.begin(), members.end(), [member_id](const Member &member)
+                                  { return member.getId() == member_id; });
+    auto borrow_book_it = std::find_if(borrow_records.begin(), borrow_records.end(), [book_id](const BorrowRecord &borrow)
+                                       { return borrow.getBookId() == book_id; });
+    if (book_it == books.end())
+    {
+        throw std::runtime_error("Book doesn't exist");
+    }
+    else if (member_it == members.end())
+    {
+        throw std::runtime_error("Member doesn't exist");
+    }
+    else if (borrow_book_it != borrow_records.end())
+    {
+        if (borrow_book_it->getMemberId() != member_id)
+        {
+            throw std::runtime_error("That book is not borrowed by that member");
+        }
+        else if (borrow_book_it->isReturned())
+        {
+            throw std::runtime_error("Book is already returned");
+        }
+        else
+        {
+            borrow_book_it->setReturnDate(Date());
+        }
+    }
+    else
+    {
+        throw std::runtime_error("Member has not borrowed that book!");
+    }
+}
+std::vector<Book> Library::getMemberBorrowedBooks(unsigned member_id) const
+{
+    if (borrow_records.empty())
+    {
+        throw std::runtime_error("Borrow records do not exist");
+    }
+    std::vector<Book> member_borrowed_books{};
+    for (const BorrowRecord &record : borrow_records)
+    {
+        if (record.getMemberId() == member_id && !record.isReturned())
+        {
+            unsigned book_id = record.getBookId();
+            auto it = std::find_if(books.begin(), books.end(), [book_id](const Book &book)
+                                   { return book.getId() == book_id; });
+            if (it != books.end())
+            {
+                member_borrowed_books.push_back(*it);
+            }
+        }
+    }
+    if (member_borrowed_books.empty())
+    {
+        throw std::runtime_error("Member doesn't have any borrowed books");
+    }
+    return member_borrowed_books;
+}
+const std::vector<BorrowRecord> &Library::getBorrowingHistory() const
+{
+    if (borrow_records.empty())
+    {
+        throw std::runtime_error("No borrowing history");
+    }
+    return borrow_records;
+}

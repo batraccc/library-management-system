@@ -177,15 +177,76 @@ int main()
         }
         case 8:
         {
+            try
+            {
+                unsigned book_id{};
+                unsigned member_id{};
+                std::cout << "Enter book id: ";
+                std::cin >> book_id;
+                std::cout << "Enter member id: ";
+                std::cin >> member_id;
+                library.borrowBook(book_id, member_id);
+                std::cout << "Book borrowed successfuly!" << std::endl;
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 9:
         {
+            try
+            {
+                unsigned book_id{};
+                unsigned member_id{};
+                std::cout << "Enter book id: ";
+                std::cin >> book_id;
+                std::cout << "Enter member id: ";
+                std::cin >> member_id;
+                library.returnBook(book_id, member_id);
+                std::cout << "Book returned successfuly!" << std::endl;
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 10:
         {
+            try
+            {
+                unsigned member_id{};
+                std::cout << "Enter member id: ";
+                std::cin >> member_id;
+                std::vector<Book> books = library.getMemberBorrowedBooks(member_id);
+                for (const auto &book : books)
+                {
+                    std::cout << book.getId() << ": " << book.getTitle() << ", " << book.getAuthor() << ", " << book.getPublishYear() << ", " << book.getISBN() << std::endl;
+                }
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 11:
         {
+            try
+            {
+                std::vector<BorrowRecord> records = library.getBorrowingHistory();
+                for (const BorrowRecord &record : records)
+                {
+                    std::cout << record.getBookId() << ", " << record.getMemberId() << ", Is returned: " << record.isReturned() << std::endl;
+                }
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 12:
         {
