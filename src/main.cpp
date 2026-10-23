@@ -1,3 +1,4 @@
+#include "../include/Library.h"
 #include <iostream>
 
 void displayMenu()
@@ -29,23 +30,92 @@ void displayMenu()
 int main()
 {
     int choice{};
+    Library library;
     do
     {
         displayMenu();
         std::cin >> choice;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         switch (choice)
         {
         case 1:
         {
+            unsigned id{};
+            std::string title{};
+            std::string author{};
+            unsigned short publish_year{};
+            std::string ISBN{};
+            std::cout << "Enter book id: ";
+            std::cin >> id;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter book title: ";
+            std::getline(std::cin, title);
+            std::cout << "Enter book author: ";
+            std::getline(std::cin, author);
+            std::cout << "Enter publish year: ";
+            std::cin >> publish_year;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter ISBN: ";
+            std::getline(std::cin, ISBN);
+            try
+            {
+                library.addBook(Book(id, title, author, publish_year, ISBN));
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 2:
         {
+            unsigned id{};
+            std::cout << "Enter book id: ";
+            std::cin >> id;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            try
+            {
+                library.removeBook(id);
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 3:
         {
+            try
+            {
+                const std::vector<Book> &all_books = library.getAllBooks();
+                for (const auto &book : all_books)
+                {
+                    std::cout << book.getId() << ": " << book.getTitle() << ", " << book.getAuthor() << ", " << book.getPublishYear() << ", " << book.getISBN() << std::endl;
+                }
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
+            break;
         }
         case 4:
         {
+            try
+            {
+                std::string title_author_ISBN{};
+                std::cout << "Enter book title, author or ISBN: ";
+                std::getline(std::cin, title_author_ISBN);
+                std::vector<Book> matching_books = library.searchBooks(title_author_ISBN);
+                for (const Book &book : matching_books)
+                {
+                    std::cout << book.getId() << ": " << book.getTitle() << ", " << book.getAuthor() << ", " << book.getPublishYear() << ", " << book.getISBN() << std::endl;
+                }
+            }
+            catch (const std::runtime_error &e)
+            {
+                std::cout << e.what() << std::endl;
+            }
         }
         case 5:
         {

@@ -35,5 +35,8 @@ void Member::addLateFee(double fee)
     {
         late_fees += fee;
     }
-    throw std::runtime_error("Invalid fee");
+    else
+    {
+        throw std::runtime_error("Invalid fee");
+    }
 }

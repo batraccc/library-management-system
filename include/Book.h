@@ -19,6 +19,7 @@ public:
     const std::string &getAuthor() const;
     unsigned short getPublishYear() const;
     const std::string &getISBN() const;
+    bool operator==(const Book &other) const;
 };
 
 #endif

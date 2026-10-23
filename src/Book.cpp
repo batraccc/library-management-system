@@ -26,3 +26,8 @@ const std::string &Book::getISBN() const
 {
     return ISBN;
 }
+
+bool Book::operator==(const Book &other) const
+{
+    return this->author == other.author && this->title == other.title && this->publish_year == other.publish_year && this->ISBN == other.ISBN;
+}
