@@ -131,7 +131,7 @@ bool Library::borrowBook(unsigned book_id, unsigned member_id)
     auto member_it = std::find_if(members.begin(), members.end(), [member_id](const Member &member)
                                   { return member.getId() == member_id; });
     auto borrow_book_it = std::find_if(borrow_records.begin(), borrow_records.end(), [book_id](const BorrowRecord &borrow)
-                                       { return borrow.getBookId() == book_id; });
+                                       { return borrow.getBookId() == book_id && !borrow.isReturned(); });
     if (book_it == books.end())
     {
         throw std::runtime_error("Book doesn't exist");
@@ -159,7 +159,7 @@ void Library::returnBook(unsigned book_id, unsigned member_id)
     auto member_it = std::find_if(members.begin(), members.end(), [member_id](const Member &member)
                                   { return member.getId() == member_id; });
     auto borrow_book_it = std::find_if(borrow_records.begin(), borrow_records.end(), [book_id](const BorrowRecord &borrow)
-                                       { return borrow.getBookId() == book_id; });
+                                       { return borrow.getBookId() == book_id && !borrow.isReturned(); });
     if (book_it == books.end())
     {
         throw std::runtime_error("Book doesn't exist");
@@ -354,7 +354,7 @@ void Library::loadFromFile(const std::string &filepath)
 
                 if (return_date_str != "no_date")
                 {
-                    std::stringstream ss2(borrow_date_str);
+                    std::stringstream ss2(return_date_str);
                     std::string day_str, month_str, year_str;
                     std::getline(ss2, day_str, '/');
                     std::getline(ss2, month_str, '/');
@@ -366,7 +366,7 @@ void Library::loadFromFile(const std::string &filepath)
 
                     if (borrowBook(book_id, member_id))
                     {
-                        BorrowRecord last_record = borrow_records.back();
+                        BorrowRecord &last_record = borrow_records.back();
                         last_record.setBorrowDate(Date(day_borrow, month_borrow, year_borrow));
                         last_record.setReturnDate(Date(day_return, month_return, year_return));
                     }
@@ -375,7 +375,7 @@ void Library::loadFromFile(const std::string &filepath)
                 {
                     if (borrowBook(book_id, member_id))
                     {
-                        BorrowRecord last_record = borrow_records.back();
+                        BorrowRecord &last_record = borrow_records.back();
                         last_record.setBorrowDate(Date(day_borrow, month_borrow, year_borrow));
                     }
                 }

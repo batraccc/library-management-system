@@ -1,6 +1,7 @@
 #include "../include/Library.h"
 #include "../include/Utilities.h"
 #include <iostream>
+#include <limits>
 
 void displayMenu()
 {
@@ -322,7 +323,12 @@ int main()
                     std::cout << "Borrow date: ";
                     record.getBorrowDate().display(std::cout);
                     std::cout << std::endl;
-                    std::cout << "Is returned: " << record.isReturned() << std::endl;
+                    if (record.isReturned())
+                    {
+                        std::cout << "Return date: ";
+                        record.getReturnDate()->display(std::cout);
+                    }
+                    std::cout << std::endl;
                 }
             }
             catch (const std::runtime_error &e)
@@ -344,6 +350,7 @@ int main()
             {
                 std::cout << e.what() << std::endl;
             }
+            break;
         }
         case 13:
         {
@@ -358,6 +365,7 @@ int main()
             {
                 std::cout << e.what() << std::endl;
             }
+            break;
         }
         default:
             if (choice != 0)
