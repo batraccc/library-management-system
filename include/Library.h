@@ -22,10 +22,16 @@ public:
     void addMember(Member member);
     void removeMember(unsigned id);
     const std::vector<Member> &getAllMembers() const;
-    void borrowBook(unsigned book_id, unsigned member_id);
+    bool borrowBook(unsigned book_id, unsigned member_id);
     void returnBook(unsigned book_id, unsigned member_id);
     std::vector<Book> getMemberBorrowedBooks(unsigned member_id) const;
     const std::vector<BorrowRecord> &getBorrowingHistory() const;
+    void saveToFile(const std::string &filename) const;
+    void loadFromFile(const std::string &filename);
+    bool bookIdExists(unsigned id) const;
+    bool memberIdExists(unsigned id) const;
+    bool isBookBorrowed(unsigned id) const;
+    bool isMemberBorrowing(unsigned id) const;
 };
 
 #endif

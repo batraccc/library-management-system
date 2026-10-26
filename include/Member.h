@@ -14,6 +14,7 @@ private:
 
 public:
     Member(unsigned id, std::string name, std::string surname, std::string email);
+    Member(unsigned id, std::string name, std::string surname, std::string email, double late_fees);
     unsigned getId() const;
     const std::string &getName() const;
     const std::string &getSurname() const;

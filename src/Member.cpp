@@ -4,6 +4,8 @@
 
 Member::Member(unsigned id, std::string name, std::string surname, std::string email) : id{id}, name{name}, surname{surname}, email{email} {}
 
+Member::Member(unsigned id, std::string name, std::string surname, std::string email, double late_fees) : id{id}, name{name}, surname{surname}, email{email}, late_fees{late_fees} {}
+
 unsigned Member::getId() const
 {
     return id;
